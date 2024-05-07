@@ -76,5 +76,21 @@ insert into appointment values (400, '2024-12-12', '3.00pm', 18, 1);
 insert into appointment values (401, '2024-11-11', '4.00pm', 28, 2);
 insert into appointment values (402, '2024-12-11', '3.00pm', 38, 3);
 
+CREATE OR REPLACE TRIGGER update_total_doc
+AFTER INSERT ON physician
+FOR EACH ROW
+DECLARE
+    dept_total NUMBER;
+BEGIN
+
+    SELECT total_doc INTO dept_total FROM department WHERE dept_id = :new.dept_id;
+    
+
+    dept_total := dept_total + 1;
+    
+
+    UPDATE department SET total_doc = dept_total WHERE dept_id = :new.dept_id;
+END;
+/
 
 /
